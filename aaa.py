@@ -23,8 +23,9 @@ def run_decoder_once(decoder_sess: ort.InferenceSession, input_ids: np.ndarray, 
     return logits
 
 def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.ndarray, processor: WhisperProcessor, forced_decoder_ids: np.ndarray, max_new_tokens=200):
-    encoder_hidden = run_encoder(encoder_sess, input_features)
+    encoder_hidden = run_encoder(encoder_sess, input_features)  # numpy
 
+    # chuẩn bị input_ids ban đầu từ forced prefix
     if forced_decoder_ids.ndim == 1:
         input_ids = forced_decoder_ids[None].astype(np.int64)
     else:

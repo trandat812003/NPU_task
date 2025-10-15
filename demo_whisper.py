@@ -15,6 +15,8 @@ input_features = processor(
     input_speech, sampling_rate=rate, return_tensors="pt"
 ).input_features
 
+print(input_features)
+
 predicted_ids = model_trained.generate(
     input_features, forced_decoder_ids=forced_decoder_ids
 )
