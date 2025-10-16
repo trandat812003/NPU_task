@@ -2,17 +2,16 @@ import torch
 
 import qai_hub as hub
 
-# Step 1: Trace model
 input_shape = (1, 80, 3000)
 example_input = torch.rand(input_shape)
 
 
-onnx_path = "whisper_encoder.onnx"
+onnx_path = r"C:\Users\asus\Documents\datnt\NPU_task\whisper_onnx\encoder_model.onnx"
 compile_job = hub.submit_compile_job(
     model=onnx_path,
     device=hub.Device("Snapdragon X Elite CRD"),
     input_specs=dict(image=input_shape),
-    options="--target_runtime onnx"
+    options="--target_runtime qnn_context_binary"
 )
 assert isinstance(compile_job, hub.CompileJob)
 
@@ -28,4 +27,4 @@ print(profile_job)
 
 target_model = compile_job.get_target_model()
 assert isinstance(target_model, hub.Model)
-target_model.download("whisper-encoder-onnx")
+target_model.download("whisper-encoder")
