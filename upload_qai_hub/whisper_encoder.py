@@ -1,5 +1,3 @@
-import torch
-
 import qai_hub as hub
 
 input_shape = (1, 80, 3000)

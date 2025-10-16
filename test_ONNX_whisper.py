@@ -34,7 +34,7 @@ def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.nda
 
     for _ in range(max_new_tokens):
         logits = run_decoder_once(decoder_sess, np.array([generated], dtype=np.int64), encoder_hidden)
-        breakpoint()
+        # breakpoint()
         next_logits = logits[:, -1, :]  # (batch, vocab)
         next_id = int(np.argmax(next_logits, axis=-1)[0])
         generated.append(next_id)
@@ -48,8 +48,8 @@ def main():
     encoder_path = "whisper_onnx/encoder_model.onnx"
     decoder_path = "whisper_onnx/decoder_model.onnx"
 
-    encoder_sess = ort.InferenceSession(encoder_path, providers=["CPUExecutionProvider"])
-    decoder_sess = ort.InferenceSession(decoder_path, providers=["CPUExecutionProvider"])
+    encoder_sess = ort.InferenceSession(encoder_path, providers=["QNNExecutionProvider"])
+    decoder_sess = ort.InferenceSession(decoder_path, providers=["QNNExecutionProvider"])
 
     processor = WhisperProcessor.from_pretrained("hkab/whisper-base-vietnamese-finetuned")
 

@@ -1,4 +1,3 @@
-import torch
 import qai_hub as hub
 
 batch_size = 1

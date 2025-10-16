@@ -26,15 +26,22 @@ class Encoder(QNNContext):
     def Inference(self, input_features):
         out = super().Inference([input_features])
         out = out[0]
-        # if out.ndim == 1:
-        #     out = out.reshape(1, 1500, 512)
-        # elif out.ndim == 2 and out.shape[-1] == 512:
-        #     out = out[None, :, :] 
+        if out.ndim == 1:
+            out = out.reshape(1, 1500, 512)
+        elif out.ndim == 2 and out.shape[-1] == 512:
+            out = out[None, :, :] 
 
         return out
 
 class Decoder(QNNContext):
     def Inference(self, input_ids, encoder_hidden_states):
+        input_ids = np.asarray(input_ids)
+        input_ids = input_ids.astype(np.int64)
+        encoder_hidden_states = np.asarray(encoder_hidden_states).astype(np.float32)
+        encoder_hidden_states = np.ascontiguousarray(encoder_hidden_states)
+
+        print("[Decoder.Inference] input_ids shape/dtype:", input_ids.shape, input_ids.dtype)
+        print("[Decoder.Inference] encoder_hidden shape/dtype:", encoder_hidden_states.shape, encoder_hidden_states.dtype)
         outs = super().Inference([input_ids, encoder_hidden_states])
         return outs[0]
 
@@ -65,7 +72,7 @@ def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.nda
 
     generated = list(input_ids[0].tolist())
 
-    breakpoint()
+    # breakpoint()
 
     for _ in range(max_new_tokens):
         logits = run_decoder_once(decoder_sess, np.array([generated], dtype=np.int64), encoder_hidden)
