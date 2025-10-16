@@ -13,11 +13,11 @@ onnx_path = r"C:\Users\asus\Documents\datnt\NPU_task\whisper_onnx\decoder_model.
 compile_job = hub.submit_compile_job(
     model=onnx_path,
     device=hub.Device("Snapdragon X Elite CRD"),
-    input_specs=dict(
-        input_ids=input_ids.shape,
-        encoder_hidden_states=encoder_hidden_states.shape
-    ),
-    options="--target_runtime qnn_context_binary"
+    input_specs={
+        "input_ids": ((batch_size, decoder_seq_len), "int64"),
+        "encoder_hidden_states": ((batch_size, encoder_seq_len // 2, 512), "float32"),
+    },
+    options="--target_runtime qnn_context_binary --truncate_64bit_io"
 )
 assert isinstance(compile_job, hub.CompileJob)
 
