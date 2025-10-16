@@ -2,11 +2,8 @@ import torch
 import qai_hub as hub
 
 batch_size = 1
-decoder_seq_len = 10
+decoder_seq_len = 80
 encoder_seq_len = 3000
-
-input_ids = torch.randint(0, 50257, (batch_size, decoder_seq_len), dtype=torch.long)
-encoder_hidden_states = torch.randn(batch_size, encoder_seq_len // 2, 512, dtype=torch.float32)
 
 onnx_path = r"C:\Users\asus\Documents\datnt\NPU_task\whisper_onnx\decoder_model.onnx"
 

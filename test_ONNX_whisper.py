@@ -34,6 +34,7 @@ def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.nda
 
     for _ in range(max_new_tokens):
         logits = run_decoder_once(decoder_sess, np.array([generated], dtype=np.int64), encoder_hidden)
+        breakpoint()
         next_logits = logits[:, -1, :]  # (batch, vocab)
         next_id = int(np.argmax(next_logits, axis=-1)[0])
         generated.append(next_id)
@@ -57,7 +58,7 @@ def main():
     if forced_np.ndim == 2 and forced_np.shape[0] > 1:
         forced_np = forced_np[0]
 
-    wav = "/home/trandat/Documents/vnpt/NPU_task/demo.wav"
+    wav = "demo.wav"
     feats = extract_features(wav, processor)
 
     transcript = greedy_decode_with_forced(
