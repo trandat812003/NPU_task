@@ -34,8 +34,7 @@ def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.nda
 
     for _ in range(max_new_tokens):
         logits = run_decoder_once(decoder_sess, np.array([generated], dtype=np.int64), encoder_hidden)
-        # breakpoint()
-        next_logits = logits[:, -1, :]  # (batch, vocab)
+        next_logits = logits[:, -1, :]
         next_id = int(np.argmax(next_logits, axis=-1)[0])
         generated.append(next_id)
         if next_id == processor.tokenizer.eos_token_id:
