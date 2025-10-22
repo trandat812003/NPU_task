@@ -32,6 +32,8 @@ def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.nda
 
     generated = list(input_ids[0].tolist())
 
+    # breakpoint()
+
     for _ in range(max_new_tokens):
         logits = run_decoder_once(decoder_sess, np.array([generated], dtype=np.int64), encoder_hidden)
         next_logits = logits[:, -1, :]
@@ -44,8 +46,8 @@ def greedy_decode_with_forced(encoder_sess, decoder_sess, input_features: np.nda
     return text
 
 def main():
-    encoder_path = "whisper_onnx/encoder_model.onnx"
-    decoder_path = "whisper_onnx/decoder_model.onnx"
+    encoder_path = "whisper_encoder.onnx"
+    decoder_path = "whisper_decoder.onnx"
 
     encoder_sess = ort.InferenceSession(encoder_path, providers=["QNNExecutionProvider"])
     decoder_sess = ort.InferenceSession(decoder_path, providers=["QNNExecutionProvider"])

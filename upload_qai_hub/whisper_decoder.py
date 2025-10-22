@@ -11,7 +11,7 @@ model.load_state_dict(checkpoint["model_state_dict"])
 decoder = model.decoder
 decoder.eval()
 
-x = torch.randint(0, 51864, (1, 1), dtype=torch.long)
+x = torch.randint(0, 51864, (1, 244), dtype=torch.long)
 xa = torch.randn((1, 1500, 512), dtype=torch.float32)
 
 
